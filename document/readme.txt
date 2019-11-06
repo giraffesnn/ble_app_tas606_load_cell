@@ -1,3 +1,13 @@
+0. 程序烧写
+0.1 烧写SoftDevice蓝牙协议栈
+    SoftDevice协议栈不开源, 只有hex文件. 通过nRFgo Studio工具
+烧写SoftDevice.
+
+Programming SoftDevices:
+https://infocenter.nordicsemi.com/index.jsp?topic=%2Fcom.nordic.infocenter.sdk5.v12.0.0%2Fgetting_started_softdevice.html
+
+0.1 通过SEGGER Embedded Studio for ARM烧写Application程序.
+
 1. 长按开机, 长按关机
 
 2. 电源指示灯为红绿双色灯:
