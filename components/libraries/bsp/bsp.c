@@ -66,7 +66,6 @@ APP_TIMER_DEF(m_bsp_power_led_tmr);
 #ifndef BSP_SIMPLE
 static bsp_event_callback_t   m_registered_callback         = NULL;
 static bsp_button_event_cfg_t m_events_list[BUTTONS_NUMBER] = {{BSP_EVENT_NOTHING, BSP_EVENT_NOTHING}};
-static bsp_button_timer_cnt m_button_timer_cnt_list[BUTTONS_NUMBER] = {{0, 0, 0}};
 APP_TIMER_DEF(m_bsp_button_tmr);
 static void bsp_button_event_handler(uint8_t pin_no, uint8_t button_action);
 #endif // BSP_SIMPLE
@@ -146,8 +145,7 @@ static void bsp_button_event_handler(uint8_t pin_no, uint8_t button_action)
         switch (button_action)
         {
             case APP_BUTTON_PUSH:
-                //event = m_events_list[button].push_event;
-                m_button_timer_cnt_list[button].push_timer_cnt = app_timer_cnt_get();
+                event = m_events_list[button].push_event;
                 if (m_events_list[button].long_push_event != BSP_EVENT_NOTHING)
                 {
                     err_code = app_timer_start(m_bsp_button_tmr, APP_TIMER_TICKS(BSP_LONG_PUSH_TIMEOUT_MS), (void*)&current_long_push_pin_no);
@@ -159,19 +157,15 @@ static void bsp_button_event_handler(uint8_t pin_no, uint8_t button_action)
                 release_event_at_push[button] = m_events_list[button].release_event;
                 break;
             case APP_BUTTON_RELEASE:
-                m_button_timer_cnt_list[button].release_timer_cnt = app_timer_cnt_get();
-                m_button_timer_cnt_list[button].ticks_diff = app_timer_cnt_diff_compute(
-                                                        m_button_timer_cnt_list[button].release_timer_cnt, 
-                                                        m_button_timer_cnt_list[button].push_timer_cnt);
                 (void)app_timer_stop(m_bsp_button_tmr);
-                if ((release_event_at_push[button] == m_events_list[button].release_event)
-                  &&(m_button_timer_cnt_list[button].ticks_diff < APP_TIMER_TICKS(BSP_SHORT_PUSH_TIMEOUT_MS)))
+                if (release_event_at_push[button] == m_events_list[button].release_event)
                 {
                     event = m_events_list[button].release_event;
                 }
                 break;
             case BSP_BUTTON_ACTION_LONG_PUSH:
                 event = m_events_list[button].long_push_event;
+                release_event_at_push[button] = m_events_list[button].long_push_event;
         }
     }
 
