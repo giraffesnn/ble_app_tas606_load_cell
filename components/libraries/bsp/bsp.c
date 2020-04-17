@@ -52,6 +52,8 @@
 #include "app_button.h"
 #endif // BSP_SIMPLE
 
+#define BTN_ID_MULTIPLEXING		  3
+
 #if LEDS_NUMBER > 0 && !(defined BSP_SIMPLE)
 static bsp_indication_t m_stable_state        = BSP_INDICATE_IDLE;
 static bsp_indication_t m_power_state         = BSP_INDICATE_BATTERY_POWER_NORMAL;
@@ -450,6 +452,14 @@ uint32_t bsp_init(uint32_t type, bsp_event_callback_t callback)
         {
             err_code = bsp_event_to_button_action_assign(num, BSP_BUTTON_ACTION_PUSH, BSP_EVENT_DEFAULT);
         }
+
+		err_code = bsp_event_to_button_action_assign(BTN_ID_MULTIPLEXING,
+													 BSP_BUTTON_ACTION_RELEASE,
+													 BSP_EVENT_SHORT_PRESS);
+
+		err_code = bsp_event_to_button_action_assign(BTN_ID_MULTIPLEXING,
+													 BSP_BUTTON_ACTION_LONG_PUSH,
+													 BSP_EVENT_LONG_PRESS);
 
         if (err_code == NRF_SUCCESS)
         {

@@ -100,7 +100,7 @@ static uint32_t                    m_num_connections = 0;  /**< Number of connec
  */
 static uint32_t connection_buttons_configure()
 {
-	
+	return NRF_SUCCESS;
 }
 
 
@@ -111,18 +111,6 @@ static uint32_t connection_buttons_configure()
  */
 static uint32_t advertising_buttons_configure()
 {
-    uint32_t err_code;
-
-    err_code = bsp_event_to_button_action_assign(BTN_ID_MULTIPLEXING,
-                                                 BSP_BUTTON_ACTION_RELEASE,
-                                                 BSP_EVENT_SHORT_PRESS);
-    RETURN_ON_ERROR_NOT_INVALID_PARAM(err_code);
-
-    err_code = bsp_event_to_button_action_assign(BTN_ID_MULTIPLEXING,
-                                                 BSP_BUTTON_ACTION_LONG_PUSH,
-                                                 BSP_EVENT_LONG_PRESS);
-    RETURN_ON_ERROR_NOT_INVALID_PARAM(err_code);
-
     return NRF_SUCCESS;
 }
 
