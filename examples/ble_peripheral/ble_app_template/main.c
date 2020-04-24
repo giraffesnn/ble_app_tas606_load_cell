@@ -255,11 +255,11 @@ static void system_power_on(void)
 {
     ret_code_t err_code = NRF_SUCCESS;
 
+	nrf_gpio_cfg_output(BOOT_CONTROL);
+	nrf_gpio_pin_set(BOOT_CONTROL);
+
 	err_code = bsp_indication_set(BSP_INDICATE_SYSTEM_POWER_ON);
 	APP_ERROR_CHECK(err_code);
-	
-    nrf_gpio_cfg_output(BOOT_CONTROL);
-    nrf_gpio_pin_set(BOOT_CONTROL);
 
     err_code = app_timer_start(m_battery_cal_timer_id, 
 		         APP_TIMER_TICKS(BATTERY_VOLATLE_CAL_INTERVAL), NULL);
